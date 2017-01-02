@@ -1,0 +1,31 @@
+language: generic
+
+sudo: false
+
+env:
+   - PROGRAM=bash 
+   - PROGRAM="bashcov -r coveralls:Coveralls::SimpleCov::Formatter --" 
+
+before_script:
+   - gem --version
+   - ruby --version
+   - git clone https://github.com/albfan/bashcov.git
+   - cd bashcov/
+   - gem build bashcov.gemspec 
+   - gem install bashcov-1.2.1.gem
+   - cd ..
+   - rm -rf bashcov
+   - git clone https://github.com/albfan/coveralls-ruby
+   - cd coveralls-ruby/
+   - gem build coveralls-ruby.gemspec 
+   - gem install coveralls-0.8.17.gem
+   - cd ..
+   - rm -rf coveralls-ruby
+   - export PATH=$PATH:$PWD
+
+script: 
+   - $PROGRAM invoke.sh
+
+notifications:
+  email:
+   -  albertofanjul@gmail.com
